@@ -1,0 +1,41 @@
+#tab1_row1_col1{
+    padding: 20px;
+    left : 10px;
+    height: 100vh;
+    border-right : rgba(80, 79, 79, 0.925) solid 1px;
+}
+
+#tab1_row1_col2{
+    padding: 10px;
+}
+
+#tab1_row1_col3{
+    padding: 10px;
+}
+
+.tab1_dropDowns{
+    display: block;
+    width : 80%;
+    margin-bottom: 10%;
+    margin-left: 5%;
+    font-size: small;
+    white-space: normal;
+}
+
+.tab1_buttons{
+    display: block;
+    width : 80%;
+    margin-bottom: 10%;
+    margin-left: 5%;
+    font-size: large;
+    text-align: left;
+    text-indent: 5%;
+}
+
+.VirtualizedSelectOption {    
+    color: black;
+}
+
+#mainScatter{
+    height: 600px;
+}
