@@ -13,7 +13,7 @@ import plotly.graph_objects as go
 import pandas as pd
 
 # Import DataFrame.
-str_path_data = "C:/PythonProject/EDA-Project/data/sKor_data_v01.csv"
+str_path_data = "sKor_data_v01.csv"
 df_raw = pd.read_csv(str_path_data)
 df_raw.drop(columns=["Unnamed: 0"], inplace= True)
 lst_var_labels = list(df_raw.columns)
