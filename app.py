@@ -13,12 +13,17 @@ import plotly.graph_objects as go
 import pandas as pd
 
 # Import DataFrame.
-str_path_data = "sKor_data_v01.csv"
+str_path_data = "sKor_data_tot_v02.csv"
 df_raw = pd.read_csv(str_path_data)
 df_raw.drop(columns=["Unnamed: 0"], inplace= True)
 lst_var_labels = list(df_raw.columns)
 lst_var_labels.pop(lst_var_labels.index("id_hh"))
 lst_var_labels.pop(lst_var_labels.index("id_hs"))
+
+# Column name lists for numerical and categorical variables.
+lst_labels_num = [l for l in lst_var_labels if l.split("_")[0] == "num"]
+lst_labels_cat = [l for l in lst_var_labels if l.split("_")[0] == "cat"]
+
 
 # Application Set-Up.
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
@@ -41,13 +46,13 @@ tab1_content = html.Div(
                             id = "tab1_dd1_label_x",
                             className= "tab1_dropDowns",
                             placeholder= "Choose Label.",
-                            options=[{'label': i, 'value': i} for i in lst_var_labels],
+                            options=[{'label': i, 'value': i} for i in lst_labels_num],
                         ),
                         dcc.Dropdown(
                             id = "tab1_dd2_label_y",
                             className= "tab1_dropDowns",
                             placeholder= "Choose Label.",
-                            options=[{'label': i, 'value': i} for i in lst_var_labels],
+                            options=[{'label': i, 'value': i} for i in lst_labels_num],
                         ),
                         dcc.Dropdown(
                             id = "tab1_dd3_hoverLabel",
@@ -89,6 +94,65 @@ tab1_content = html.Div(
         ),
     ]
 )
+# BootStrap Components. TAB2.
+tab2_content = html.Div(
+    [
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        dcc.Dropdown(
+                            id = "tab2_dd1_label_x",
+                            className= "tab2_dropDowns",
+                            placeholder= "Choose Label.",
+                            options=[{'label': i, 'value': i} for i in lst_labels_cat],
+                        ),
+                        dcc.Dropdown(
+                            id = "tab2_dd2_label_y",
+                            className= "tab2_dropDowns",
+                            placeholder= "Choose Label.",
+                            options=[{'label': i, 'value': i} for i in lst_labels_num],
+                        ),
+                        dcc.Dropdown(
+                            id = "tab2_dd3_hoverLabel",
+                            className= "tab2_dropDowns",
+                            placeholder= "Choose hovering Labels.",
+                            options=[{'label': i, 'value': i} for i in lst_var_labels],
+                            multi= True,
+                        ),
+                        dbc.Button(
+                            "Load to Plotting",
+                            id = "button_tab2_plt",
+                            className= "tab2_buttons",
+                            color= "warning",                            
+                            disabled= True,
+                        ),
+                    ],
+                    width = {"size" : 2},
+                    id = "tab2_row1_col1"
+                ),
+                dbc.Col(
+                    [
+                        dbc.Spinner(children= [dcc.Graph(id = "mainBox", figure= fig_empty)],),                                                
+                    ],
+                    width = {"size" : 5},
+                    id = "tab2_row1_col2",
+                    align = "center"
+                ),                
+                dbc.Col(
+                    [
+                        dbc.Spinner(children= [dcc.Graph(id = "tab2_dist_x", figure= fig_empty)],),
+                        dbc.Spinner(children= [dcc.Graph(id = "tab2_dist_y", figure= fig_empty)],),
+                    ],
+                    width = {"size" : 5},
+                    id = "tab2_row1_col3",
+                    align = "center",
+                ),
+            ],
+            id = "tab2_row1"
+        ),
+    ]
+)
 
 # Application Set-Up.
 app.layout = html.Div(
@@ -96,7 +160,7 @@ app.layout = html.Div(
         dbc.Tabs(
             [
                 dbc.Tab(tab1_content, label = "SCATTER_EXPLORER"),
-                # dbc.Tab(tab2_content, label = "TBD_02"),
+                dbc.Tab(tab2_content, label = "BOX_EXPLORER"),
                 # dbc.Tab(tab3_content, label = "TBD_03"),                
             ],
         ),        
@@ -135,7 +199,7 @@ def plt_mainScatter(in_label_x, in_label_y, in_hover, in_df):
     
     return fig
 
-# Function to have simple 
+# Function to have simple dist plotting.
 def plt_dist_aux(in_label, in_df):
     
     import pandas as pd
@@ -154,7 +218,38 @@ def plt_dist_aux(in_label, in_df):
     )
     
     return fig
+
+# Function to have simple box plotting.
+def plt_mainBox (in_label_x, in_label_y, in_hover, in_df, in_lst_cat):
     
+    import pandas as pd
+    import plotly.express as px
+    
+    in_df[in_lst_cat] = in_df[in_lst_cat].astype("category")
+    
+    # Hover data setting.        
+    if in_hover:
+        hoverLabel = { str(i):":.5g" for i in in_hover}
+    else:
+        hoverLabel = {}    
+    
+    fig = px.box(
+        in_df,
+        x= in_label_x,
+        y= in_label_y,
+        color= in_label_x,
+        hover_name= "id_hs",
+        hover_data= hoverLabel,
+    )
+    
+    fig.update_layout(
+        template = "plotly_dark",
+        paper_bgcolor = "#222222",
+        plot_bgcolor = "#222222",
+    )
+    
+    return fig
+
 # Call-back to activate plotting button.
 @app.callback(
     Output("button_tab1_plt", "disabled"),
@@ -196,6 +291,48 @@ def tab1_trig_ploting (in_nClicks_plt, in_label_x, in_label_y, in_hover):
         fig_dist_x = plt_dist_aux(in_label_x, df_raw)
         fig_dixt_y =plt_dist_aux(in_label_y, df_raw)
         return fig_mainScatter, fig_dist_x, fig_dixt_y
+    else:
+        return [dash.no_update]*3
+    
+@app.callback(
+    Output("button_tab2_plt", "disabled"),
+    [
+        Input("tab2_dd1_label_x", "value"),
+        Input("tab2_dd2_label_y", "value"),
+        Input("tab2_dd3_hoverLabel", "value"),
+    ],        
+)
+def tab2_activate_plot_button (in_label_x, in_label_y, in_hover):
+    if in_hover:        
+        if (
+            in_label_x == None or
+            in_label_y == None or
+            in_label_x == "None" or
+            in_label_y == "None" 
+            ):
+            return True
+        else:
+            return False
+    else:
+        return True
+    
+@app.callback(
+    Output("mainBox", "figure"),
+    Output("tab2_dist_x", "figure"),
+    Output("tab2_dist_y", "figure"),
+    Input("button_tab2_plt","n_clicks"),    
+    [
+        State("tab2_dd1_label_x", "value"),
+        State("tab2_dd2_label_y", "value"),
+        State("tab2_dd3_hoverLabel", "value"),
+    ],        
+)
+def tab1_trig_ploting (in_nClicks_plt, in_label_x, in_label_y, in_hover):
+    if in_nClicks_plt:
+        fig_mainBox = plt_mainBox(in_label_x, in_label_y, in_hover, df_raw, lst_labels_cat)
+        fig_tab2_dist_x = plt_dist_aux(in_label_x, df_raw)
+        fig_tab2_dixt_y = plt_dist_aux(in_label_y, df_raw)
+        return fig_mainBox, fig_tab2_dist_x, fig_tab2_dixt_y
     else:
         return [dash.no_update]*3
 
