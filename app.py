@@ -35,6 +35,131 @@ fig_empty = go.Figure(
     layout_plot_bgcolor = "#222222", 
 )
 
+# BootStrap Components. CARDS
+card_1 = dbc.Card(
+    [        
+        dbc.CardBody(
+            [
+                html.H4(
+                    "1. Welcome!",
+                    className= "card-title",
+                ),
+                html.P(
+                    "Welcome to this web application! "
+                    "This application will help you to exploer the data set used for the EDA (Energy Data Analysis) coursework! "
+                    "EDA is a core module for the MSc. Energy Systems and Data Analytics at UCL. ",
+                    className= "card-text",
+                ),
+                html.H4(
+                    "2. Who we are...",
+                    className= "card-title",
+                ),
+                html.P(
+                    "We are \"One Team\" Group 8 for the EDA coursework (ESDA 21-22 cohort). "
+                    "We are just three. But, our capability is far beyond four!", 
+                    className= "card-text",
+                ),
+                html.H4(
+                    "3. What data?",
+                    className= "card-title",
+                ),
+                html.P(
+                    "For the coursework, household energy consumption data from South Korea has been used. "
+                    "This data encompasses various household characteristics for annual energy consumption as heat unit. ",
+                    className= "card-text",
+                ),
+                html.P(                    
+                    "You may not familiar with variable names in the data set. Please, refer to \"Table of Variables\" on the right hand side.",
+                    className= "card-text",
+                ),                                                  
+            ],
+        ),
+    ],
+    style= {"height": "100vh"},
+    id= "card_1",
+)
+
+card_2 = dbc.Card(
+    [
+        dbc.CardBody(
+            [
+                html.H4(
+                    "4. This Application ...",
+                    className= "card-title",
+                ),
+                html.P(
+                    "This application consists of three tabs. "
+                    "First one is what you are currently looking at for an introduction. "
+                    "Second one is dedicated to provide you the scatter plot for numerical variables. "
+                    "The last one is dedicated to provide you the box plot for categorical variables. "
+                    "It is not difficult for you to understand how this application works. "
+                    "But, please read \"5. How to use\" before you go to next tabs. ", 
+                    className= "card-text",
+                ),
+                html.H4(
+                    "5. How to use",
+                    className= "card-title",
+                ),
+                html.P(
+                    "For each tab for graphs, you will need to select several options in the left panel. "
+                    "You need to select a variable to be shown as x-axis. "
+                    "Then, you need to select a variable to be shown as y-axis. "
+                    "After that, you need to select, at least one, hovering labels which will be shown when you hover your mouse on the data points. "
+                    "At last, you finally need to push \"Plot with selections\" button to apply your selections. ", 
+                    className= "card-text",
+                ),                
+            ],
+        ),
+    ],
+    style= {"height": "100vh"},
+    id= "card_2",
+)
+
+card_3 = dbc.Card(
+    [
+        dbc.CardBody(
+            [
+                html.H4(
+                    "UCL ESDA",
+                    className= "card-title",
+                ),                
+                html.P(""),
+                html.P(""),
+                dbc.CardImg(src="./static/images/esda_banner.png"),
+                html.P(""),
+                html.P(""),
+                dbc.CardImg(src="./static/images/esda_who.png"),
+                html.P(""),
+                html.P(""),
+                dbc.CardImg(src="./static/images/esda_built.png"),
+                html.P(""),
+                html.P(""),
+                dbc.CardImg(src="./static/images/esda_phil.png"),                       
+            ],            
+        ),
+    ],
+    style= {"height": "100vh"},
+    id= "card_3",
+)
+
+card_4 = dbc.Card(
+    [
+        dbc.CardBody(
+            [
+                html.H4(
+                    "Table of variables",
+                    className= "card-title",
+                ),
+                html.P(""),
+                html.P(""),
+                dbc.CardImg(src="./static/images/var_table.png"),                  
+            ],            
+        ),
+    ],
+    style= {"height": "100vh"},
+    id= "card_4",
+)
+
 # BootStrap Components. TAB1.
 tab1_content = html.Div(
     [
@@ -45,24 +170,24 @@ tab1_content = html.Div(
                         dcc.Dropdown(
                             id = "tab1_dd1_label_x",
                             className= "tab1_dropDowns",
-                            placeholder= "Choose Label.",
+                            placeholder= "Choose Label X",
                             options=[{'label': i, 'value': i} for i in lst_labels_num],
                         ),
                         dcc.Dropdown(
                             id = "tab1_dd2_label_y",
                             className= "tab1_dropDowns",
-                            placeholder= "Choose Label.",
+                            placeholder= "Choose Label Y",
                             options=[{'label': i, 'value': i} for i in lst_labels_num],
                         ),
                         dcc.Dropdown(
                             id = "tab1_dd3_hoverLabel",
                             className= "tab1_dropDowns",
-                            placeholder= "Choose hovering Labels.",
+                            placeholder= "Choose hovering Labels",
                             options=[{'label': i, 'value': i} for i in lst_var_labels],
                             multi= True,
                         ),
                         dbc.Button(
-                            "Load to Plotting",
+                            "Plot with seletions",
                             id = "button_tab1_plt",
                             className= "tab1_buttons",
                             color= "warning",                            
@@ -104,24 +229,24 @@ tab2_content = html.Div(
                         dcc.Dropdown(
                             id = "tab2_dd1_label_x",
                             className= "tab2_dropDowns",
-                            placeholder= "Choose Label.",
+                            placeholder= "Choose Label X",
                             options=[{'label': i, 'value': i} for i in lst_labels_cat],
                         ),
                         dcc.Dropdown(
                             id = "tab2_dd2_label_y",
                             className= "tab2_dropDowns",
-                            placeholder= "Choose Label.",
+                            placeholder= "Choose Label Y",
                             options=[{'label': i, 'value': i} for i in lst_labels_num],
                         ),
                         dcc.Dropdown(
                             id = "tab2_dd3_hoverLabel",
                             className= "tab2_dropDowns",
-                            placeholder= "Choose hovering Labels.",
+                            placeholder= "Choose hovering Labels",
                             options=[{'label': i, 'value': i} for i in lst_var_labels],
                             multi= True,
                         ),
                         dbc.Button(
-                            "Load to Plotting",
+                            "Plot with seletions",
                             id = "button_tab2_plt",
                             className= "tab2_buttons",
                             color= "warning",                            
@@ -154,11 +279,42 @@ tab2_content = html.Div(
     ]
 )
 
+# BoostStrap Components. TAB_INTRO.
+tab_intro = html.Div(
+    [
+        dbc.Row(
+            [
+                dbc.Col(                    
+                    width= 1,
+                ),
+                dbc.Col(
+                    card_3,
+                    width= 2,
+                ),                          
+                dbc.Col(
+                    card_1,
+                    width= 2,
+                ),
+                dbc.Col(
+                    card_2,
+                    width= 2,
+                ),
+                dbc.Col(
+                    card_4,
+                    width= 4,
+                ),                
+            ],
+            style= {"padding":"15px"},
+        ),
+    ],
+)
+
 # Application Set-Up.
 app.layout = html.Div(
     [        
         dbc.Tabs(
             [
+                dbc.Tab(tab_intro, label = "INTRODUCTION"),
                 dbc.Tab(tab1_content, label = "SCATTER_EXPLORER"),
                 dbc.Tab(tab2_content, label = "BOX_EXPLORER"),
                 # dbc.Tab(tab3_content, label = "TBD_03"),                
