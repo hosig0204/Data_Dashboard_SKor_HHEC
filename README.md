@@ -2,7 +2,7 @@
 
 ## 1. Welcome!
 This is a repository for a data dashboard based on Plotly & Dash.
-This web application will help you to exploer the data set used for the EDA (Energy Data Analysis) module coursework under the programme MSc.ESDA (The Bartlett Energy Institute, UCL). After cloning this repository, execute "app.py". Then a link for web application will be shown in your python terminal. If you want to skip to the good part, click below link.
+This web application will help you to exploer the data set used for the EDA (Energy Data Analysis) module coursework under the programme MSc.ESDA (The Bartlett Energy Institute, UCL). After cloning this repository, execute "app.py". Then, a link for web application will be shown in your python terminal. If you want to skip to the good part, click below link.
 
 <p align="center">Link: <a href= "https://holee21.pythonanywhere.com">Web App built on pythonanywhere</a></p>
 
