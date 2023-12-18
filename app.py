@@ -483,7 +483,7 @@ def tab2_activate_plot_button (in_label_x, in_label_y, in_hover):
         State("tab2_dd3_hoverLabel", "value"),
     ],        
 )
-def tab1_trig_ploting (in_nClicks_plt, in_label_x, in_label_y, in_hover):
+def tab2_trig_ploting (in_nClicks_plt, in_label_x, in_label_y, in_hover):
     if in_nClicks_plt:
         fig_mainBox = plt_mainBox(in_label_x, in_label_y, in_hover, df_raw, lst_labels_cat)
         fig_tab2_dist_x = plt_dist_aux(in_label_x, df_raw)
